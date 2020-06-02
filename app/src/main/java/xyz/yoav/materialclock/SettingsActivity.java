@@ -1,19 +1,29 @@
 package xyz.yoav.materialclock;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Switch;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -32,6 +42,8 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     static boolean showHours=true, showMinutes=true, showSeconds=true;
     static String fontName = "default";
 
+    FrameLayout preview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +57,9 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        preview =  findViewById(R.id.preview_view);
+
+        setupPreviewFrame();
         widgetSetup();
     }
 
@@ -78,8 +93,6 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         widgetSetup();
 
     }
-
-
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
@@ -130,6 +143,39 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     }
 
+    private void setupPreviewFrame() {
+        ImageView preview = findViewById(R.id.bg);
+        if (isReadStoragePermissionGranted()) {
+            final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+            final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+            preview.setImageDrawable(wallpaperDrawable);
+        }
+    }
+
+    public boolean isReadStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked1");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted1");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        setupPreviewFrame();
+    }
+
     private void widgetSetup() {
         Log.d(TAG,"## widgetSetup");
         Intent intent = getIntent();
@@ -140,13 +186,19 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
+
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
         RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(),
                 getLayoutResource());
+        //set clock format
         views.setCharSequence(R.id.clock,"setFormat24Hour",getHourFormat());
-
         //set clock color
         views.setTextColor(R.id.clock,clockColor);
+
+        preview.removeAllViews();
+        View previewView = views.apply(this,preview);
+        preview.addView(previewView);
+
 
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
