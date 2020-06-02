@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">MaterialClock</string>
+    <string name="empty_view_text">MaterialClock</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="design_header">Design</string>
+    <string name="color_picker_header">Clock color</string>
+    <string name="show_hour_header">Show hour</string>
+    <string name="show_minutes_header">Show Minutes</string>
+    <string name="show_seconds_header">Show Seconds</string>
+    <string name="clock_font_header">Font</string>
+
+    <!-- SharedPrefereces -->
+    <string name="sp_main">sp_main</string>
+    <string name="sp_clock_color">sp_clock_color</string>
+    <string name="sp_show_hour">sp_show_hour</string>
+    <string name="sp_show_minutes">sp_show_minutes</string>
+    <string name="sp_show_seconds">sp_show_seconds</string>
+    <string name="sp_font">sp_font</string>
+
+
+</resources>

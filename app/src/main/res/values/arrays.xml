@@ -1,0 +1,23 @@
+<resources>
+    <string-array name="font_list">
+        <item>Default</item>
+        <item>Warnes</item>
+        <item>Lato</item>
+        <item>Arizonia</item>
+        <item>Rubik</item>
+        <item>Imprima</item>
+        <item>Noto sans</item>
+        <item>Jolly lodger</item>
+    </string-array>
+
+    <string-array name="font_list_values">
+        <item>default</item>
+        <item>warnes</item>
+        <item>lato</item>
+        <item>arizonia</item>
+        <item>rubik</item>
+        <item>imprima</item>
+        <item>notosans</item>
+        <item>jollylodger</item>
+    </string-array>
+</resources>
