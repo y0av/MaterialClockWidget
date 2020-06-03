@@ -5,6 +5,8 @@
 
     <!-- Preference Titles -->
     <string name="design_header">Design</string>
+    <string name="time_header">Time layout</string>
+    <string name="date_header">Date layout</string>
     <string name="color_picker_header">Clock color</string>
     <string name="show_hour_header">Show hour</string>
     <string name="show_minutes_header">Show Minutes</string>

@@ -1,36 +1,42 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/design_header">
 
 
+        <ListPreference
+            android:defaultValue="false"
+            android:entries="@array/font_list"
+            android:entryValues="@array/font_list_values"
+            android:key="@string/sp_font"
+            android:title="@string/clock_font_header"
+            app:icon="@drawable/ic_font"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/time_header">
+
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/sp_show_hour"
-            android:title="@string/show_hour_header" />
+            android:title="@string/show_hour_header"
+            app:icon="@drawable/ic_text" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/sp_show_minutes"
-            android:title="@string/show_minutes_header" />
+            android:title="@string/show_minutes_header"
+            app:icon="@drawable/ic_text" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/sp_show_seconds"
-            android:title="@string/show_seconds_header" />
-
+            android:title="@string/show_seconds_header"
+            app:icon="@drawable/ic_text" />
         <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
             android:id="@id/cpv_color_picker_view"
             android:key="@string/sp_clock_color"
             android:title="@string/color_picker_header"
             app:cpv_showAlphaSlider="false"
-            />
-        <ListPreference
-            android:defaultValue="false"
-            android:entries="@array/font_list"
-            android:entryValues="@array/font_list_values"
-            app:useSimpleSummaryProvider="true"
-            android:key="@string/sp_font"
-            android:title="@string/clock_font_header" />
-
+            app:icon="@drawable/ic_colorize" />
     </PreferenceCategory>
 
 </PreferenceScreen>

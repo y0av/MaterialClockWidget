@@ -34,13 +34,12 @@ import com.jaredrummler.android.colorpicker.ColorPreferenceCompat;
 
 import java.util.Calendar;
 
-public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends AppCompatActivity implements WidgetUpdatedInterface {
 
     private static final String TAG = "SettingsActivity";
     int appWidgetId;
-    static int clockColor = Color.MAGENTA;
-    static boolean showHours=true, showMinutes=true, showSeconds=true;
-    static String fontName = "default";
+    private WidgetViewCreator widgetViewCreator;
+
 
     FrameLayout preview;
 
@@ -59,6 +58,8 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
         preview =  findViewById(R.id.preview_view);
 
+        widgetViewCreator = new WidgetViewCreator(this, this);
+
         setupPreviewFrame();
         widgetSetup();
     }
@@ -68,31 +69,21 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         super.onResume();
         Log.d(TAG,"## listen");
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        onSharedPreferenceChanged(sharedPreferences,"");
+        sharedPreferences.registerOnSharedPreferenceChangeListener(widgetViewCreator);
+        widgetViewCreator.onSharedPreferenceChanged(sharedPreferences,"");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE).unregisterOnSharedPreferenceChangeListener(this);
+        getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE).unregisterOnSharedPreferenceChangeListener(widgetViewCreator);
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        //if (key.equals(getString(R.string.sp_clock_color)))
-            clockColor = sharedPreferences.getInt(getString(R.string.sp_clock_color), Color.MAGENTA);
-        //else if (key.equals(getString(R.string.sp_show_hour)))
-            showHours = sharedPreferences.getBoolean(getString(R.string.sp_show_hour),true);
-        //else if (key.equals(getString(R.string.sp_show_minutes)))
-            showMinutes = sharedPreferences.getBoolean(getString(R.string.sp_show_minutes),true);
-        //else if (key.equals(getString(R.string.sp_show_seconds)))
-            showSeconds = sharedPreferences.getBoolean(getString(R.string.sp_show_seconds),true);
-        //else if (key.equals(getString(R.string.sp_font)))
-            fontName = sharedPreferences.getString(getString(R.string.sp_font),"default");
+    public void widgetDataUpdated() {
         widgetSetup();
-
     }
+
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
@@ -120,12 +111,8 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
             @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
                 SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main),Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                if (getString(R.string.sp_clock_color).equals(preference.getKey())) {
-                    clockColor = (int)newValue;
-                    editor.putInt(getString(R.string.sp_clock_color), clockColor);
-                    String newDefaultColor = Integer.toHexString((int) newValue);
-                    Log.d(TAG, "## New default color is: #" + newDefaultColor);
-                }
+                if (getString(R.string.sp_clock_color).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_clock_color), (int)newValue);
                 if (getString(R.string.sp_show_hour).equals(preference.getKey()))
                     editor.putBoolean(getString(R.string.sp_show_hour),(boolean)newValue);
                 if (getString(R.string.sp_show_minutes).equals(preference.getKey()))
@@ -158,14 +145,11 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
                     == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
-
-                Log.v(TAG,"Permission is revoked1");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
                 return false;
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted1");
             return true;
         }
     }
@@ -185,21 +169,12 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-        RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(),
-                getLayoutResource());
-        //set clock format
-        views.setCharSequence(R.id.clock,"setFormat24Hour",getHourFormat());
-        //set clock color
-        views.setTextColor(R.id.clock,clockColor);
 
+        RemoteViews views = widgetViewCreator.createWidgetRemoteView();
         preview.removeAllViews();
         View previewView = views.apply(this,preview);
         preview.addView(previewView);
-
-
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
         Intent resultValue = new Intent();
@@ -207,34 +182,6 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         setResult(RESULT_OK, resultValue);
         //finish();
 
-    }
-
-    private String getHourFormat() {
-        String format = "";
-        if (showHours) format += "k";
-        if (showMinutes) {
-            if (!format.isEmpty()) format += ":";
-            format += "mm";
-        }
-        if (showSeconds) {
-            if (!format.isEmpty()) format += ":";
-            format += "ss";
-        }
-        Log.d(TAG,"## format: " + format);
-        return format;
-    }
-
-    private int getLayoutResource() {
-        switch (fontName) {
-            case "warnes": return R.layout.widget_layout_warnes;
-            case "lato": return R.layout.widget_layout_lato;
-            case "arizonia": return R.layout.widget_layout_arizonia;
-            case "imprima": return R.layout.widget_layout_imprima;
-            case "notosans": return R.layout.widget_layout_notosans;
-            case "rubik": return R.layout.widget_layout_rubik;
-            case "jollylodger": return R.layout.widget_layout_jollylodger;
-            default: return R.layout.widget_layout_default;
-        }
     }
 
 }

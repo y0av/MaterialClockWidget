@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.util.Log;
@@ -15,19 +16,28 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.Random;
 
-public class ClockWidgetProvider extends AppWidgetProvider {
+import static android.content.Context.MODE_PRIVATE;
+
+public class ClockWidgetProvider extends AppWidgetProvider implements WidgetUpdatedInterface {
     public static final String CLICK_ACTION = "xyz.yoav.materialclock.CLICK_ACTION";
     public static final String EXTRA_ITEM = "xyz.yoav.materialclock.EXTRA_ITEM";
     public static final String APPWIDGET_UPDATE_OPTIONS = "android.appwidget.action.APPWIDGET_UPDATE_OPTIONS";
+    public static final String APPWIDGET_ENABLED = "android.appwidget.action.APPWIDGET_ENABLED";
 
-    //private static SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy  hh:mm:ss a");
-    //private static SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
-    //static String strWidgetText = "";
+    WidgetViewCreator widgetViewCreator;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        //Log.d("yoav", "## " + intent.getAction());
+        //Log.d("yoav", "## onReceive " + intent.getAction());
+    }
+
+    private void redrawWidgetFromData(Context context, AppWidgetManager appWidgetManager, int widgetId) {
+        widgetViewCreator = new WidgetViewCreator(this,context);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.sp_main),MODE_PRIVATE);
+        widgetViewCreator.onSharedPreferenceChanged(sharedPreferences,"");
+        RemoteViews views = widgetViewCreator.createWidgetRemoteView();
+        appWidgetManager.updateAppWidget(widgetId, views);
     }
 
     @Override
@@ -48,9 +58,10 @@ public class ClockWidgetProvider extends AppWidgetProvider {
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
                 ClockWidgetProvider.class);
+
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         for (int widgetId : allWidgetIds) {
-
+            redrawWidgetFromData(context, appWidgetManager, widgetId);
             // Register an onClickListener
             /*Intent intent = new Intent(context, ClockWidgetProvider.class);
 
@@ -62,5 +73,10 @@ public class ClockWidgetProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.clock, pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);*/
         }
+    }
+
+    @Override
+    public void widgetDataUpdated() {
+
     }
 }
