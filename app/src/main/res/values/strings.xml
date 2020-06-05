@@ -12,6 +12,14 @@
     <string name="show_minutes_header">Show Minutes</string>
     <string name="show_seconds_header">Show Seconds</string>
     <string name="clock_font_header">Font</string>
+    <string name="seperator_title">Seperator</string>
+    <string name="time_size_title">Time size</string>
+    <string name="time_align_title">Time align</string>
+
+    <string name="date_align_title">Date align</string>
+    <string name="show_date_title">Show date</string>
+    <string name="date_size_title">Date size</string>
+    <string name="date_color_picker_title">Date color</string>
 
     <!-- SharedPrefereces -->
     <string name="sp_main">sp_main</string>
@@ -20,6 +28,14 @@
     <string name="sp_show_minutes">sp_show_minutes</string>
     <string name="sp_show_seconds">sp_show_seconds</string>
     <string name="sp_font">sp_font</string>
+    <string name="sp_seperator">sp_seperator</string>
+    <string name="sp_time_size">sp_time_size</string>
+    <string name="sp_time_align">sp_time_align</string>
+
+    <string name="sp_date_align">sp_date_align</string>
+    <string name="sp_show_date">sp_show_date</string>
+    <string name="sp_date_size">sp_date_size</string>
+    <string name="sp_date_color">sp_date_color</string>
 
 
 </resources>

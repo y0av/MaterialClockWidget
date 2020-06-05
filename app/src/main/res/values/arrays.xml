@@ -1,23 +1,36 @@
 <resources>
     <string-array name="font_list">
-        <item>Default</item>
-        <item>Warnes</item>
-        <item>Lato</item>
+       <!-- <item>Default</item>
+        <item>Warnes</item>-->
+        <item>Lato regular</item>
+        <item>Lato thin</item>
         <item>Arizonia</item>
-        <item>Rubik</item>
+        <!--<item>Rubik</item>
         <item>Imprima</item>
         <item>Noto sans</item>
-        <item>Jolly lodger</item>
+        <item>Jolly lodger</item>-->
     </string-array>
 
     <string-array name="font_list_values">
-        <item>default</item>
-        <item>warnes</item>
-        <item>lato</item>
+        <!--<item>default</item>
+        <item>warnes</item>-->
+        <item>latoreg</item>
+        <item>latothin</item>
         <item>arizonia</item>
-        <item>rubik</item>
+        <!--<item>rubik</item>
         <item>imprima</item>
         <item>notosans</item>
-        <item>jollylodger</item>
+        <item>jollylodger</item>-->
+    </string-array>
+
+    <string-array name="text_align_keys">
+        <item>Left</item>
+        <item>Center</item>
+        <item>Right</item>
+    </string-array>
+    <string-array name="text_align_values">
+        <item>3</item>
+        <item>17</item>
+        <item>5</item>
     </string-array>
 </resources>

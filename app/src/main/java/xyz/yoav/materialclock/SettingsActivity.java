@@ -24,9 +24,11 @@ import android.widget.Switch;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SeekBarPreference;
 import androidx.preference.TwoStatePreference;
 
 import com.jaredrummler.android.colorpicker.ColorPickerView;
@@ -92,7 +94,7 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
             SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE);
 
             ColorPreferenceCompat colorPreference = findPreference(getString(R.string.sp_clock_color));
-            colorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_clock_color), Color.MAGENTA));
+            colorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_clock_color), Color.WHITE));
             colorPreference.setOnPreferenceChangeListener(listener);
             TwoStatePreference show_hour = findPreference(getString(R.string.sp_show_hour));
             show_hour.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_hour),true));
@@ -103,8 +105,22 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
             TwoStatePreference show_seconds = findPreference(getString(R.string.sp_show_seconds));
             show_seconds.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_seconds),true));
             show_seconds.setOnPreferenceChangeListener(listener);
+            EditTextPreference seperator = findPreference(getString(R.string.sp_seperator));
+            seperator.setOnPreferenceChangeListener(listener);
             ListPreference fontList = findPreference(getString(R.string.sp_font));
             fontList.setOnPreferenceChangeListener(listener);
+            SeekBarPreference clockSize = findPreference(getString(R.string.sp_time_size));
+            clockSize.setOnPreferenceChangeListener(listener);
+            ListPreference timeAlign = findPreference(getString(R.string.sp_time_align));
+            timeAlign.setOnPreferenceChangeListener(listener);
+
+            ListPreference dateAlign = findPreference(getString(R.string.sp_date_align));
+            dateAlign.setOnPreferenceChangeListener(listener);
+            SeekBarPreference dateSize = findPreference(getString(R.string.sp_date_size));
+            dateSize.setOnPreferenceChangeListener(listener);
+            ColorPreferenceCompat dateColorPreference = findPreference(getString(R.string.sp_date_color));
+            dateColorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_date_color), Color.WHITE));
+            dateColorPreference.setOnPreferenceChangeListener(listener);
         }
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
@@ -119,9 +135,22 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
                     editor.putBoolean(getString(R.string.sp_show_minutes),(boolean)newValue);
                 if (getString(R.string.sp_show_seconds).equals(preference.getKey()))
                     editor.putBoolean(getString(R.string.sp_show_seconds),(boolean)newValue);
-                if (getString(R.string.sp_font).equals(preference.getKey())) {
+                if (getString(R.string.sp_font).equals(preference.getKey()))
                     editor.putString(getString(R.string.sp_font),(String)newValue);
-                }
+                if (getString(R.string.sp_seperator).equals(preference.getKey()))
+                    editor.putString(getString(R.string.sp_seperator),(String)newValue);
+                if (getString(R.string.sp_time_size).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_time_size), (int)newValue);
+                if (getString(R.string.sp_time_align).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_time_align), Integer.parseInt((String)newValue));
+
+                if (getString(R.string.sp_date_align).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_date_align), Integer.parseInt((String)newValue));
+                if (getString(R.string.sp_date_size).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_date_size), (int)newValue);
+                if (getString(R.string.sp_date_color).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_date_color), (int)newValue);
+
 
                 editor.apply();
                 return true;

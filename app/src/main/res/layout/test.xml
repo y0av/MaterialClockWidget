@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/clock_frame"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:layout_marginHorizontal="@dimen/widget_margin"
-    android:layout_marginVertical="@dimen/widget_margin_vertical">
+    android:orientation="vertical">
 
-    <android.widget.TextClock
+    <TextView
         android:id="@+id/clockLeft"
         style="@style/ClockStyle"
+        android:fontFamily="@font/arizonia"
         android:gravity="center_vertical|left"
-        android:visibility="gone"
-        android:fontFamily="@font/lato_thin" />
-    <android.widget.TextClock
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/clock"
         style="@style/ClockStyle"
-        android:gravity="center"
+        android:autoSizeTextType="none"
+        android:fitsSystemWindows="false"
+        android:fontFamily="@font/imprima"
+        android:gravity="top"
+        android:lineSpacingExtra="0sp"
+        android:text="zxcvzxcvzxcvzxcv"
+        android:textSize="30sp"
         android:visibility="visible"
-        android:fontFamily="@font/lato_thin" />
-    <android.widget.TextClock
+        tools:text="10:30" />
+
+    <TextView
         android:id="@+id/clockRight"
         style="@style/ClockStyle"
+        android:fontFamily="@font/arizonia"
         android:gravity="center_vertical|right"
-        android:visibility="gone"
-        android:fontFamily="@font/lato_thin" />
-    <android.widget.TextClock
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/dateLeft"
         style="@style/ClockStyle"
+        android:fontFamily="@font/arizonia"
         android:gravity="center_vertical|left"
-        android:visibility="gone"
-        android:fontFamily="@font/lato_thin" />
-    <android.widget.TextClock
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/date"
         style="@style/ClockStyle"
+        android:fontFamily="@font/arizonia"
         android:gravity="center"
+        android:text="ccvbcvbcvb"
+        android:textSize="30sp"
         android:visibility="visible"
-        android:fontFamily="@font/lato_thin" />
-    <android.widget.TextClock
+        tools:text="xcvxvxcv" />
+
+    <TextView
         android:id="@+id/dateRight"
         style="@style/ClockStyle"
+        android:fontFamily="@font/arizonia"
         android:gravity="center_vertical|right"
-        android:visibility="gone"
-        android:fontFamily="@font/lato_thin" />
+        android:visibility="gone" />
 </LinearLayout>
