@@ -14,9 +14,11 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
     private static final String TAG = "WidgetViewCreator";
     static int clockColor = Color.WHITE,
             dateColor = Color.WHITE;
-    static boolean showHours=true, showMinutes=true, showSeconds=true;
-    static String fontName = "default",
-                  seperator = ":";
+    static boolean showTime=true,
+                showDate;
+    static String timeFormat="k:mm",
+                dateFormat="EEE, MMM d";
+    static String fontName = "default";
     static int timeTextSize=42,
                 dateTextSize=22;
     static int timeAlign = Gravity.CENTER,
@@ -35,39 +37,17 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
         clockColor = sharedPreferences.getInt(context.getString(R.string.sp_clock_color), Color.WHITE);
         dateColor = sharedPreferences.getInt(context.getString(R.string.sp_date_color), Color.WHITE);
         //else if (key.equals(getString(R.string.sp_show_hour)))
-        showHours = sharedPreferences.getBoolean(context.getString(R.string.sp_show_hour),true);
-        //else if (key.equals(getString(R.string.sp_show_minutes)))
-        showMinutes = sharedPreferences.getBoolean(context.getString(R.string.sp_show_minutes),true);
-        //else if (key.equals(getString(R.string.sp_show_seconds)))
-        showSeconds = sharedPreferences.getBoolean(context.getString(R.string.sp_show_seconds),true);
-        //else if (key.equals(getString(R.string.sp_font)))
+        showTime = sharedPreferences.getBoolean(context.getString(R.string.sp_show_time),true);
+        showDate = sharedPreferences.getBoolean(context.getString(R.string.sp_show_date),true);
+        timeFormat = sharedPreferences.getString(context.getString(R.string.sp_time_format),"k:mm");
+        dateFormat = sharedPreferences.getString(context.getString(R.string.sp_date_format),"EEE, MMM d");
         fontName = sharedPreferences.getString(context.getString(R.string.sp_font),"default");
-        seperator = sharedPreferences.getString(context.getString(R.string.sp_seperator),":");
         timeTextSize = sharedPreferences.getInt(context.getString(R.string.sp_time_size),42);
         dateTextSize = sharedPreferences.getInt(context.getString(R.string.sp_date_size),22);
         timeAlign = sharedPreferences.getInt(context.getString(R.string.sp_time_align),Gravity.CENTER);
         dateAlign = sharedPreferences.getInt(context.getString(R.string.sp_date_align),Gravity.CENTER);
 
         widgetUpdatedInterface.widgetDataUpdated();
-    }
-
-    private String getHourFormat() {
-        String format = "";
-        if (showHours) format += "k";
-        if (showMinutes) {
-            if (!format.isEmpty()) format += seperator;
-            format += "mm";
-        }
-        if (showSeconds) {
-            if (!format.isEmpty()) format += seperator;
-            format += "ss";
-        }
-        Log.d(TAG,"## format: " + format);
-        return format;
-    }
-
-    private String getDateFormat() {
-        return "EEE, MMM d";
     }
 
     private int getLayoutResource() {
@@ -123,18 +103,20 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
         views.setViewVisibility(R.id.clockLeft, View.GONE);
         views.setViewVisibility(R.id.clock, View.GONE);
         views.setViewVisibility(R.id.clockRight, View.GONE);
-        views.setViewVisibility(getCorrectClockView(), View.VISIBLE);
+        if (showTime)
+            views.setViewVisibility(getCorrectClockView(), View.VISIBLE);
         //set date alignment
         views.setViewVisibility(R.id.dateLeft, View.GONE);
         views.setViewVisibility(R.id.date, View.GONE);
         views.setViewVisibility(R.id.dateRight, View.GONE);
-        views.setViewVisibility(getCorrectCDateView(), View.VISIBLE);
+        if (showDate)
+            views.setViewVisibility(getCorrectCDateView(), View.VISIBLE);
         //set clock format
-        views.setCharSequence(getCorrectClockView(),"setFormat24Hour",getHourFormat());
-        views.setCharSequence(getCorrectClockView(),"setFormat12Hour",getHourFormat());
+        views.setCharSequence(getCorrectClockView(),"setFormat24Hour",timeFormat);
+        views.setCharSequence(getCorrectClockView(),"setFormat12Hour",timeFormat);
         //set date format
-        views.setCharSequence(getCorrectCDateView(),"setFormat24Hour",getDateFormat());
-        views.setCharSequence(getCorrectCDateView(),"setFormat12Hour",getDateFormat());
+        views.setCharSequence(getCorrectCDateView(),"setFormat24Hour",dateFormat);
+        views.setCharSequence(getCorrectCDateView(),"setFormat12Hour",dateFormat);
         //set time size
         views.setTextViewTextSize(getCorrectClockView(), TypedValue.COMPLEX_UNIT_SP,timeTextSize);
         //set date size
