@@ -9,40 +9,58 @@
     android:layout_marginHorizontal="@dimen/widget_margin"
     android:layout_marginVertical="@dimen/widget_margin_vertical">
 
-    <android.widget.TextClock
-        android:id="@+id/clockLeft"
-        style="@style/ClockStyle"
-        android:gravity="center_vertical|left"
-        android:visibility="gone"
-        android:fontFamily="@font/lato" />
-    <android.widget.TextClock
-        android:id="@+id/clock"
-        style="@style/ClockStyle"
-        android:gravity="center"
-        android:visibility="visible"
-        android:fontFamily="@font/lato" />
-    <android.widget.TextClock
-        android:id="@+id/clockRight"
-        style="@style/ClockStyle"
-        android:gravity="center_vertical|right"
-        android:visibility="gone"
-        android:fontFamily="@font/lato" />
-    <android.widget.TextClock
-        android:id="@+id/dateLeft"
-        style="@style/ClockStyle"
-        android:gravity="center_vertical|left"
-        android:visibility="gone"
-        android:fontFamily="@font/lato" />
-    <android.widget.TextClock
-        android:id="@+id/date"
-        style="@style/ClockStyle"
-        android:gravity="center"
-        android:visibility="visible"
-        android:fontFamily="@font/lato" />
-    <android.widget.TextClock
-        android:id="@+id/dateRight"
-        style="@style/ClockStyle"
-        android:gravity="center_vertical|right"
-        android:visibility="gone"
-        android:fontFamily="@font/lato" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+        <android.widget.TextClock
+            android:id="@+id/clockLeft"
+            style="@style/ClockStyle"
+            android:fontFamily="@font/lato"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:visibility="gone" />
+        <android.widget.TextClock
+            android:id="@+id/clock"
+            style="@style/ClockStyle"
+            android:fontFamily="@font/lato"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:visibility="visible" />
+        <android.widget.TextClock
+            android:id="@+id/clockRight"
+            style="@style/ClockStyle"
+            android:fontFamily="@font/lato"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:visibility="gone" />
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+        <android.widget.TextClock
+            android:id="@+id/dateLeft"
+            style="@style/ClockStyle"
+            android:fontFamily="@font/lato"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:visibility="gone" />
+        <android.widget.TextClock
+            android:id="@+id/date"
+            style="@style/ClockStyle"
+            android:fontFamily="@font/lato"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="visible" />
+        <android.widget.TextClock
+            android:id="@+id/dateRight"
+            style="@style/ClockStyle"
+            android:fontFamily="@font/lato"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:visibility="gone" />
+    </LinearLayout>
 </LinearLayout>

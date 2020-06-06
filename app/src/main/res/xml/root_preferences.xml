@@ -12,6 +12,14 @@
             android:title="@string/clock_font_header"
             app:icon="@drawable/ic_font"
             app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/widget_layout_titles"
+            android:entryValues="@array/widget_layout_values"
+            android:key="@string/sp_layout"
+            android:title="@string/widget_layout_title"
+            app:icon="@drawable/ic_layout"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/time_header">

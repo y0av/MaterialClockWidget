@@ -2,11 +2,14 @@
     <string name="app_name">MaterialClock</string>
     <string name="empty_view_text">MaterialClock</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="save_title">Save</string>
 
     <!-- Preference Titles -->
     <string name="design_header">Design</string>
+    <string name="widget_layout_title">Widget orientation</string>
     <string name="time_header">Time layout</string>
     <string name="date_header">Date layout</string>
+
     <string name="color_picker_header">Clock color</string>
     <string name="show_time_title">Show time</string>
     <string name="time_format_title">Time format</string>
@@ -25,10 +28,13 @@
 
     <!-- SharedPrefereces -->
     <string name="sp_main">sp_main</string>
+
+    <string name="sp_font">sp_font</string>
+    <string name="sp_layout">sp_layout</string>
+
     <string name="sp_clock_color">sp_clock_color</string>
     <string name="sp_show_time">sp_show_time</string>
     <string name="sp_time_format">sp_time_format</string>
-    <string name="sp_font">sp_font</string>
     <string name="sp_time_size">sp_time_size</string>
     <string name="sp_time_align">sp_time_align</string>
 

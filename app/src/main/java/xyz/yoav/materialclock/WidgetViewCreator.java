@@ -7,7 +7,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -23,6 +26,8 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
                 dateTextSize=22;
     static int timeAlign = Gravity.CENTER,
             dateAlign = Gravity.CENTER;
+    static final int VERTICAL=0, VERTICAL_FLIPPED=1, HORIZONTAL=2, HORIZONTAL_FLIPPED=3; //this need to be the same as the corresponding array in arrays.xml
+    static int widgetOrientation = VERTICAL;
     private Context context;
     private WidgetUpdatedInterface widgetUpdatedInterface;
 
@@ -46,6 +51,7 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
         dateTextSize = sharedPreferences.getInt(context.getString(R.string.sp_date_size),22);
         timeAlign = sharedPreferences.getInt(context.getString(R.string.sp_time_align),Gravity.CENTER);
         dateAlign = sharedPreferences.getInt(context.getString(R.string.sp_date_align),Gravity.CENTER);
+        widgetOrientation = sharedPreferences.getInt(context.getString(R.string.sp_layout),VERTICAL);
 
         widgetUpdatedInterface.widgetDataUpdated();
     }
@@ -56,8 +62,10 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
                 return R.layout.widget_layout_warnes;
             case "latoreg":
                 return R.layout.widget_layout_latoreg;
+            case "latolight":
+                return R.layout.widget_layout_latolight;
             case "latothin":
-                return R.layout.widget_layout_lato;
+                return R.layout.widget_layout_latothin;
             case "arizonia":
                 return R.layout.widget_layout_arizonia;
             case "imprima":
@@ -73,25 +81,39 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
         }
     }
 
-    private int getCorrectClockView() {
-        Log.d(TAG,"## timeAlign: " + timeAlign);
-        //return R.id.clock;
-        switch (timeAlign) {
-            case Gravity.LEFT: return R.id.clockLeft;
-            case Gravity.CENTER: return R.id.clock;
-            case Gravity.RIGHT: return R.id.clockRight;
-            default:return R.id.clock;
+    private int getCorrectTimeView() {
+        if (widgetOrientation==HORIZONTAL) return R.id.clockLeft;
+        else if (widgetOrientation==HORIZONTAL_FLIPPED) return R.id.clockRight;
+        else if (widgetOrientation==VERTICAL) {
+            switch (timeAlign) {
+                case Gravity.LEFT: return R.id.clockLeft;
+                case Gravity.RIGHT: return R.id.clockRight;
+                default: return R.id.clock; //center
+            }
+        } else { //VERTICAL_FLIPPED
+            switch (timeAlign) {
+                case Gravity.LEFT: return R.id.dateLeft;
+                case Gravity.RIGHT: return R.id.dateRight;
+                default: return R.id.date; //center
+            }
         }
     }
 
-    private int getCorrectCDateView() {
-        Log.d(TAG,"## dateAlign: " + dateAlign);
-        //return R.id.clock;
-        switch (dateAlign) {
-            case Gravity.LEFT: return R.id.dateLeft;
-            case Gravity.CENTER: return R.id.date;
-            case Gravity.RIGHT: return R.id.dateRight;
-            default:return R.id.date;
+    private int getCorrectDateView() {
+        if (widgetOrientation==HORIZONTAL) return R.id.clockRight;
+        else if (widgetOrientation==HORIZONTAL_FLIPPED) return R.id.clockLeft;
+        else if (widgetOrientation==VERTICAL) {
+            switch (dateAlign) {
+                case Gravity.LEFT: return R.id.dateLeft;
+                case Gravity.RIGHT: return R.id.dateRight;
+                default: return R.id.date; //center
+            }
+        } else { //VERTICAL_FLIPPED
+            switch (dateAlign) {
+                case Gravity.LEFT: return R.id.clockLeft;
+                case Gravity.RIGHT: return R.id.clockRight;
+                default: return R.id.clock; //center
+            }
         }
     }
 
@@ -103,28 +125,29 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
         views.setViewVisibility(R.id.clockLeft, View.GONE);
         views.setViewVisibility(R.id.clock, View.GONE);
         views.setViewVisibility(R.id.clockRight, View.GONE);
-        if (showTime)
-            views.setViewVisibility(getCorrectClockView(), View.VISIBLE);
         //set date alignment
         views.setViewVisibility(R.id.dateLeft, View.GONE);
         views.setViewVisibility(R.id.date, View.GONE);
         views.setViewVisibility(R.id.dateRight, View.GONE);
+        if (showTime)
+            views.setViewVisibility(getCorrectTimeView(), View.VISIBLE);
         if (showDate)
-            views.setViewVisibility(getCorrectCDateView(), View.VISIBLE);
+            views.setViewVisibility(getCorrectDateView(), View.VISIBLE);
         //set clock format
-        views.setCharSequence(getCorrectClockView(),"setFormat24Hour",timeFormat);
-        views.setCharSequence(getCorrectClockView(),"setFormat12Hour",timeFormat);
+        views.setCharSequence(getCorrectTimeView(),"setFormat24Hour",timeFormat);
+        views.setCharSequence(getCorrectTimeView(),"setFormat12Hour",timeFormat);
         //set date format
-        views.setCharSequence(getCorrectCDateView(),"setFormat24Hour",dateFormat);
-        views.setCharSequence(getCorrectCDateView(),"setFormat12Hour",dateFormat);
+        views.setCharSequence(getCorrectDateView(),"setFormat24Hour",dateFormat);
+        views.setCharSequence(getCorrectDateView(),"setFormat12Hour",dateFormat);
         //set time size
-        views.setTextViewTextSize(getCorrectClockView(), TypedValue.COMPLEX_UNIT_SP,timeTextSize);
+        views.setTextViewTextSize(getCorrectTimeView(), TypedValue.COMPLEX_UNIT_SP,timeTextSize);
         //set date size
-        views.setTextViewTextSize(getCorrectCDateView(), TypedValue.COMPLEX_UNIT_SP,dateTextSize);
+        views.setTextViewTextSize(getCorrectDateView(), TypedValue.COMPLEX_UNIT_SP,dateTextSize);
         //set clock color
-        views.setTextColor(getCorrectClockView(),clockColor);
+        views.setTextColor(getCorrectTimeView(),clockColor);
         //set date color
-        views.setTextColor(getCorrectCDateView(),dateColor);
+        views.setTextColor(getCorrectDateView(),dateColor);
+
         return views;
     }
 }

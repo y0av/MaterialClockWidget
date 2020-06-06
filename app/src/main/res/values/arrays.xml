@@ -1,26 +1,28 @@
 <resources>
     <string-array name="font_list">
-       <!-- <item>Default</item>
-        <item>Warnes</item>-->
+       <item>System font</item>
+        <item>Warnes</item>
         <item>Lato regular</item>
+        <item>Lato light</item>
         <item>Lato thin</item>
         <item>Arizonia</item>
-        <!--<item>Rubik</item>
+        <item>Rubik light</item>
         <item>Imprima</item>
         <item>Noto sans</item>
-        <item>Jolly lodger</item>-->
+        <item>Jolly lodger</item>
     </string-array>
 
     <string-array name="font_list_values">
-        <!--<item>default</item>
-        <item>warnes</item>-->
+        <item>default</item>
+        <item>warnes</item>
         <item>latoreg</item>
+        <item>latolight</item>
         <item>latothin</item>
         <item>arizonia</item>
-        <!--<item>rubik</item>
+        <item>rubik</item>
         <item>imprima</item>
         <item>notosans</item>
-        <item>jollylodger</item>-->
+        <item>jollylodger</item>
     </string-array>
 
     <string-array name="text_align_keys">
@@ -32,5 +34,18 @@
         <item>3</item>
         <item>17</item>
         <item>5</item>
+    </string-array>
+
+    <string-array name="widget_layout_titles">
+        <item>Vertical</item>
+        <item>Vertical flipped</item>
+        <item>Horizontal</item>
+        <item>Horizontal flipped</item>
+    </string-array>
+    <string-array name="widget_layout_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 </resources>

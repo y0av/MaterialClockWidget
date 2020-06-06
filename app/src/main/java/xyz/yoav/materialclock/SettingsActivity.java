@@ -14,6 +14,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -55,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
                 .commit();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(false);
         }
 
         preview =  findViewById(R.id.preview_view);
@@ -121,6 +123,9 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
             show_date.setOnPreferenceChangeListener(listener);
             EditTextPreference dateFormat = findPreference(getString(R.string.sp_date_format));
             dateFormat.setOnPreferenceChangeListener(listener);
+
+            ListPreference widgetOrientation = findPreference(getString(R.string.sp_layout));
+            widgetOrientation.setOnPreferenceChangeListener(listener);
         }
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
@@ -139,7 +144,6 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
                     editor.putInt(getString(R.string.sp_time_size), (int)newValue);
                 if (getString(R.string.sp_time_align).equals(preference.getKey()))
                     editor.putInt(getString(R.string.sp_time_align), Integer.parseInt((String)newValue));
-
                 if (getString(R.string.sp_date_align).equals(preference.getKey()))
                     editor.putInt(getString(R.string.sp_date_align), Integer.parseInt((String)newValue));
                 if (getString(R.string.sp_date_size).equals(preference.getKey()))
@@ -150,6 +154,8 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
                     editor.putBoolean(getString(R.string.sp_show_date),(boolean)newValue);
                 if (getString(R.string.sp_date_format).equals(preference.getKey()))
                     editor.putString(getString(R.string.sp_date_format),(String)newValue);
+                if (getString(R.string.sp_layout).equals(preference.getKey()))
+                    editor.putInt(getString(R.string.sp_layout), Integer.parseInt((String) newValue));
 
 
                 editor.apply();
@@ -186,7 +192,7 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        setupPreviewFrame();
+        setupPreviewFrame(); //thats here to setup the preview window after permission to fetch the user wallpaper has being approved
     }
 
     private void widgetSetup() {
@@ -209,8 +215,21 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
-        //finish();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.savebtn) {
+            finish(); //thats enough. finishing this activity will activate the widget
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
