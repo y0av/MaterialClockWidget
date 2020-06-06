@@ -7,10 +7,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RemoteViews;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceChangeListener {
 
