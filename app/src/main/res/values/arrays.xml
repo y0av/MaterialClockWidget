@@ -10,6 +10,11 @@
         <item>Imprima</item>
         <item>Noto sans</item>
         <item>Jolly lodger</item>
+        <item>Archivo black</item>
+        <item>Bungee shade</item>
+        <item>Coda</item>
+        <item>Ubuntu light</item>
+        <item>Handlee</item>
     </string-array>
 
     <string-array name="font_list_values">
@@ -23,6 +28,11 @@
         <item>imprima</item>
         <item>notosans</item>
         <item>jollylodger</item>
+        <item>archivoblack</item>
+        <item>bungeeshade</item>
+        <item>coda</item>
+        <item>ubuntulight</item>
+        <item>handlee</item>
     </string-array>
 
     <string-array name="text_align_keys">

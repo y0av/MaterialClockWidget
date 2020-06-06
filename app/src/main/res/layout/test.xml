@@ -28,7 +28,7 @@
             android:layout_weight="2"
             android:autoSizeTextType="none"
             android:fitsSystemWindows="false"
-            android:fontFamily="@font/imprima"
+            android:fontFamily="@font/handlee"
             android:gravity="center"
             android:lineSpacingExtra="0sp"
             android:text="zxcvzxcvzxcvzxcv"

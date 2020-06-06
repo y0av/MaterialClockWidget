@@ -76,6 +76,16 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
                 return R.layout.widget_layout_rubik;
             case "jollylodger":
                 return R.layout.widget_layout_jollylodger;
+            case "archivoblack":
+                return R.layout.widget_layout_archivoblack;
+            case "bungeeshade":
+                return R.layout.widget_layout_bungeeshade;
+            case "coda":
+                return R.layout.widget_layout_coda;
+            case "ubuntulight":
+                return R.layout.widget_layout_ubuntulight;
+            case "handlee":
+                return R.layout.widget_layout_handlee;
             default:
                 return R.layout.widget_layout_default;
         }
