@@ -25,14 +25,19 @@
         <TextView
             android:id="@+id/clock"
             style="@style/ClockStyle"
+            android:layout_width="190dp"
             android:layout_weight="2"
             android:autoSizeTextType="none"
+            android:breakStrategy="simple"
             android:fitsSystemWindows="false"
             android:fontFamily="@font/handlee"
             android:gravity="center"
+            android:includeFontPadding="false"
             android:lineSpacingExtra="0sp"
+            android:scrollHorizontally="false"
+            android:singleLine="true"
             android:text="zxcvzxcvzxcvzxcv"
-            android:textSize="30sp"
+            android:textSize="236sp"
             android:visibility="visible"
             tools:text="10:30" />
 
