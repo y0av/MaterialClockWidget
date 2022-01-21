@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 32
     buildToolsVersion '30.0.2'
 
     defaultConfig {
         applicationId "xyz.yoav.materialclock"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 32
         versionCode 3
         versionName "1.0.4"
 
@@ -26,10 +26,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
 }
