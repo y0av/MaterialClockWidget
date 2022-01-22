@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="@dimen/widget_margin"
     android:layout_marginVertical="@dimen/widget_margin_vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
             android:id="@+id/clockLeft"
             style="@style/ClockStyle"
             android:layout_weight="1"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|end"
             android:visibility="gone" />
         <android.widget.TextClock
             android:id="@+id/clock"
@@ -30,10 +30,10 @@
             android:id="@+id/clockRight"
             style="@style/ClockStyle"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical|start"
             android:visibility="gone" />
     </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:id="@+id/dateLeft"
             style="@style/ClockStyle"
             android:layout_weight="1"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|end"
             android:visibility="gone" />
         <android.widget.TextClock
             android:id="@+id/date"
@@ -54,7 +54,7 @@
             android:id="@+id/dateRight"
             style="@style/ClockStyle"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical|start"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

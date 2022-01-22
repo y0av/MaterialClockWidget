@@ -23,7 +23,7 @@
     <string name="date_size_title">Date size</string>
     <string name="date_color_picker_title">Date color</string>
 
-    <string name="time_format_dialog_msg">H - Hour in day (0–23)\nk – Hour in day (1–24)\nK - Hour in am/pm (0-11) \nh - Hour in am/pm (1-12)\nm - Minute\ns - Second\na - Am/pm marker</string>
+    <string name="time_format_dialog_msg">H – Hour in day (0–23)\nk – Hour in day (1–24)\nK – Hour in am/pm (0–11) \nh - Hour in am/pm (1-12)\nm - Minute\ns - Second\na - Am/pm marker</string>
     <string name="date_format_dialog_msg">y - Year\nM - Month\nd - Day in month\nD - Day in year\nE - Day name in week\nw - Week in year\nW - Week in month</string>
 
     <!-- SharedPrefereces -->

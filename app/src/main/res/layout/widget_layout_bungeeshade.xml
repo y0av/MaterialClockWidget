@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="@dimen/widget_margin"
     android:layout_marginVertical="@dimen/widget_margin_vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|start"
             android:visibility="gone" />
         <android.widget.TextClock
             android:id="@+id/clock"
@@ -33,10 +33,10 @@
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical|end"
             android:visibility="gone" />
     </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|start"
             android:visibility="gone" />
         <android.widget.TextClock
             android:id="@+id/date"
@@ -60,7 +60,7 @@
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical|end"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>
