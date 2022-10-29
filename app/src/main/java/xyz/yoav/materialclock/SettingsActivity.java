@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Switch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -60,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
 
-        preview =  findViewById(R.id.preview_view);
+        preview = findViewById(R.id.preview_view);
 
         widgetViewCreator = new WidgetViewCreator(this, this);
 
@@ -71,16 +72,16 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG,"## listen");
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE);
+        Log.d(TAG, "## listen");
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.sp_main), MODE_PRIVATE);
         sharedPreferences.registerOnSharedPreferenceChangeListener(widgetViewCreator);
-        widgetViewCreator.onSharedPreferenceChanged(sharedPreferences,"");
+        widgetViewCreator.onSharedPreferenceChanged(sharedPreferences, "");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE).unregisterOnSharedPreferenceChangeListener(widgetViewCreator);
+        getSharedPreferences(getString(R.string.sp_main), MODE_PRIVATE).unregisterOnSharedPreferenceChangeListener(widgetViewCreator);
     }
 
     @Override
@@ -93,13 +94,13 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main),MODE_PRIVATE);
+            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main), MODE_PRIVATE);
 
             ColorPreferenceCompat colorPreference = findPreference(getString(R.string.sp_clock_color));
             colorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_clock_color), Color.WHITE));
             colorPreference.setOnPreferenceChangeListener(listener);
             TwoStatePreference show_time = findPreference(getString(R.string.sp_show_time));
-            show_time.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_time),true));
+            show_time.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_time), true));
             show_time.setOnPreferenceChangeListener(listener);
             EditTextPreference timeFormat = findPreference(getString(R.string.sp_time_format));
             timeFormat.setOnPreferenceChangeListener(listener);
@@ -119,7 +120,7 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
             dateColorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_date_color), Color.WHITE));
             dateColorPreference.setOnPreferenceChangeListener(listener);
             TwoStatePreference show_date = findPreference(getString(R.string.sp_show_date));
-            show_date.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_date),true));
+            show_date.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_date), true));
             show_date.setOnPreferenceChangeListener(listener);
             EditTextPreference dateFormat = findPreference(getString(R.string.sp_date_format));
             dateFormat.setOnPreferenceChangeListener(listener);
@@ -129,31 +130,32 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
         }
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-            @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
-                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main),Context.MODE_PRIVATE);
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 if (getString(R.string.sp_clock_color).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_clock_color), (int)newValue);
+                    editor.putInt(getString(R.string.sp_clock_color), (int) newValue);
                 if (getString(R.string.sp_show_time).equals(preference.getKey()))
-                    editor.putBoolean(getString(R.string.sp_show_time),(boolean)newValue);
+                    editor.putBoolean(getString(R.string.sp_show_time), (boolean) newValue);
                 if (getString(R.string.sp_font).equals(preference.getKey()))
-                    editor.putString(getString(R.string.sp_font),(String)newValue);
+                    editor.putString(getString(R.string.sp_font), (String) newValue);
                 if (getString(R.string.sp_time_format).equals(preference.getKey()))
-                    editor.putString(getString(R.string.sp_time_format),(String)newValue);
+                    editor.putString(getString(R.string.sp_time_format), (String) newValue);
                 if (getString(R.string.sp_time_size).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_time_size), (int)newValue);
+                    editor.putInt(getString(R.string.sp_time_size), (int) newValue);
                 if (getString(R.string.sp_time_align).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_time_align), Integer.parseInt((String)newValue));
+                    editor.putInt(getString(R.string.sp_time_align), Integer.parseInt((String) newValue));
                 if (getString(R.string.sp_date_align).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_date_align), Integer.parseInt((String)newValue));
+                    editor.putInt(getString(R.string.sp_date_align), Integer.parseInt((String) newValue));
                 if (getString(R.string.sp_date_size).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_date_size), (int)newValue);
+                    editor.putInt(getString(R.string.sp_date_size), (int) newValue);
                 if (getString(R.string.sp_date_color).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_date_color), (int)newValue);
+                    editor.putInt(getString(R.string.sp_date_color), (int) newValue);
                 if (getString(R.string.sp_show_date).equals(preference.getKey()))
-                    editor.putBoolean(getString(R.string.sp_show_date),(boolean)newValue);
+                    editor.putBoolean(getString(R.string.sp_show_date), (boolean) newValue);
                 if (getString(R.string.sp_date_format).equals(preference.getKey()))
-                    editor.putString(getString(R.string.sp_date_format),(String)newValue);
+                    editor.putString(getString(R.string.sp_date_format), (String) newValue);
                 if (getString(R.string.sp_layout).equals(preference.getKey()))
                     editor.putInt(getString(R.string.sp_layout), Integer.parseInt((String) newValue));
 
@@ -167,36 +169,23 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
 
     private void setupPreviewFrame() {
         ImageView preview = findViewById(R.id.bg);
-        if (isReadStoragePermissionGranted()) {
-            final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-            final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-            preview.setImageDrawable(wallpaperDrawable);
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+            return;
         }
-    }
-
-    public boolean isReadStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
-        }
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        preview.setImageDrawable(wallpaperDrawable);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         setupPreviewFrame(); //thats here to setup the preview window after permission to fetch the user wallpaper has being approved
     }
 
     private void widgetSetup() {
-        Log.d(TAG,"## widgetSetup");
+        Log.d(TAG, "## widgetSetup");
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -208,7 +197,7 @@ public class SettingsActivity extends AppCompatActivity implements WidgetUpdated
 
         RemoteViews views = widgetViewCreator.createWidgetRemoteView();
         preview.removeAllViews();
-        View previewView = views.apply(this,preview);
+        View previewView = views.apply(this, preview);
         preview.addView(previewView);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);

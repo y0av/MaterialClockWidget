@@ -20,21 +20,24 @@
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
             android:gravity="center_vertical|start"
-            android:visibility="gone" />
+            android:visibility="gone"/>
+            <!--android:theme="@style/CustomFont"-->
         <android.widget.TextClock
             android:id="@+id/clock"
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="2"
             android:gravity="center"
-            android:visibility="visible" />
+            android:visibility="visible"/>
+        <!--android:theme="@style/CustomFont"-->
         <android.widget.TextClock
             android:id="@+id/clockRight"
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
-            android:visibility="gone" />
+            android:visibility="gone"/>
+        <!--android:theme="@style/CustomFont"-->
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -47,20 +50,23 @@
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
             android:gravity="center_vertical|start"
-            android:visibility="gone" />
+            android:visibility="gone"/>
+        <!--android:theme="@style/CustomFont"-->
         <android.widget.TextClock
             android:id="@+id/date"
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
             android:gravity="center"
-            android:visibility="visible" />
+            android:visibility="visible"/>
+        <!--android:theme="@style/CustomFont"-->
         <android.widget.TextClock
             android:id="@+id/dateRight"
             style="@style/ClockStyle"
             android:fontFamily="@font/bungee_shade"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
-            android:visibility="gone" />
+            android:visibility="gone"/>
+        <!--android:theme="@style/CustomFont"-->
     </LinearLayout>
 </LinearLayout>

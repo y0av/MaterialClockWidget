@@ -25,8 +25,8 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
             dateAlign = Gravity.CENTER;
     static final int VERTICAL=0, VERTICAL_FLIPPED=1, HORIZONTAL=2, HORIZONTAL_FLIPPED=3; //this need to be the same as the corresponding array in arrays.xml
     static int widgetOrientation = VERTICAL;
-    private Context context;
-    private WidgetUpdatedInterface widgetUpdatedInterface;
+    private final Context context;
+    private final WidgetUpdatedInterface widgetUpdatedInterface;
 
     public WidgetViewCreator(WidgetUpdatedInterface widgetUpdatedInterface, Context context) {
         this.context = context;
@@ -154,6 +154,8 @@ public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceCh
         views.setTextColor(getCorrectTimeView(),clockColor);
         //set date color
         views.setTextColor(getCorrectDateView(),dateColor);
+
+
 
         return views;
     }

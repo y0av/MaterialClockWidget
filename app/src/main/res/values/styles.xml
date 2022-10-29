@@ -15,4 +15,10 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="CustomFont" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/bungee_shade</item>
+        <item name="android:fontFamily">@font/bungee_shade</item>
+    </style>
+
+
 </resources>
