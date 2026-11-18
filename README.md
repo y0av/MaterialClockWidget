@@ -39,11 +39,14 @@ Versions 1.0.x bundled their own font files. Android 12 and later ignore an app'
 
 Needs JDK 17 or later.
 
-Release builds are signed when `keystore.properties` exists at the repo root. It is gitignored. To create it without typing passwords into a file or your shell history:
+Release builds are signed when `keystore.properties` exists at the repo root (it is gitignored):
 
-    scripts/setup_signing.sh /path/to/keystore.jks [key-alias]
+    storeFile=/path/to/keystore.jks
+    storePassword=...
+    keyAlias=...
+    keyPassword=...
 
-The script checks both passwords against the keystore before writing anything. Then:
+Then:
 
     ./gradlew bundleRelease
 

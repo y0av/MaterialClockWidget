@@ -15,3 +15,4 @@
 /keystore.properties
 /.idea
 /app/release
+/scripts/setup_signing.sh
