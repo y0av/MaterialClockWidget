@@ -3,160 +3,131 @@ package xyz.yoav.materialclock;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RemoteViews;
 
-public class WidgetViewCreator implements SharedPreferences.OnSharedPreferenceChangeListener {
+import java.util.Map;
 
-    private static final String TAG = "WidgetViewCreator";
-    static int clockColor = Color.WHITE,
-            dateColor = Color.WHITE;
-    static boolean showTime=true,
-                showDate;
-    static String timeFormat="k:mm",
-                dateFormat="EEE, MMM d";
-    static String fontName = "default";
-    static int timeTextSize=42,
-                dateTextSize=22;
-    static int timeAlign = Gravity.CENTER,
-            dateAlign = Gravity.CENTER;
-    static final int VERTICAL=0, VERTICAL_FLIPPED=1, HORIZONTAL=2, HORIZONTAL_FLIPPED=3; //this need to be the same as the corresponding array in arrays.xml
-    static int widgetOrientation = VERTICAL;
+/** Builds the widget's RemoteViews from one widget's settings. */
+final class WidgetViewCreator {
+
+    // Must match res/values/arrays.xml widget_layout_values.
+    static final int VERTICAL = 0, VERTICAL_FLIPPED = 1, HORIZONTAL = 2, HORIZONTAL_FLIPPED = 3;
+
+    static final String COLOR_CUSTOM = "custom";
+    static final String COLOR_DYNAMIC_LIGHT = "dynamic_light";
+    static final String COLOR_DYNAMIC_DARK = "dynamic_dark";
+
     private final Context context;
-    private final WidgetUpdatedInterface widgetUpdatedInterface;
+    private final String font;
+    private final int orientation;
+    private final String colorMode;
+    private final boolean showTime, showDate;
+    private final int timeColor, dateColor;
+    private final String timeFormat, dateFormat;
+    private final int timeSize, dateSize;
+    private final int timeAlign, dateAlign;
 
-    public WidgetViewCreator(WidgetUpdatedInterface widgetUpdatedInterface, Context context) {
+    WidgetViewCreator(Context context, SharedPreferences prefs) {
         this.context = context;
-        this.widgetUpdatedInterface = widgetUpdatedInterface;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        //if (key.equals(getString(R.string.sp_clock_color)))
-        clockColor = sharedPreferences.getInt(context.getString(R.string.sp_clock_color), Color.WHITE);
-        dateColor = sharedPreferences.getInt(context.getString(R.string.sp_date_color), Color.WHITE);
-        //else if (key.equals(getString(R.string.sp_show_hour)))
-        showTime = sharedPreferences.getBoolean(context.getString(R.string.sp_show_time),true);
-        showDate = sharedPreferences.getBoolean(context.getString(R.string.sp_show_date),true);
-        timeFormat = sharedPreferences.getString(context.getString(R.string.sp_time_format),"k:mm");
-        dateFormat = sharedPreferences.getString(context.getString(R.string.sp_date_format),"EEE, MMM d");
-        fontName = sharedPreferences.getString(context.getString(R.string.sp_font),"default");
-        timeTextSize = sharedPreferences.getInt(context.getString(R.string.sp_time_size),42);
-        dateTextSize = sharedPreferences.getInt(context.getString(R.string.sp_date_size),22);
-        timeAlign = sharedPreferences.getInt(context.getString(R.string.sp_time_align),Gravity.CENTER);
-        dateAlign = sharedPreferences.getInt(context.getString(R.string.sp_date_align),Gravity.CENTER);
-        widgetOrientation = sharedPreferences.getInt(context.getString(R.string.sp_layout),VERTICAL);
-
-        widgetUpdatedInterface.widgetDataUpdated();
+        // Defaults must match res/xml/root_preferences.xml.
+        Map<String, ?> all = prefs.getAll();
+        font = WidgetPrefs.getString(all, WidgetPrefs.FONT, "default");
+        orientation = WidgetPrefs.getInt(all, WidgetPrefs.LAYOUT, VERTICAL);
+        colorMode = WidgetPrefs.getString(all, WidgetPrefs.COLOR_MODE, COLOR_CUSTOM);
+        showTime = WidgetPrefs.getBoolean(all, WidgetPrefs.SHOW_TIME, true);
+        showDate = WidgetPrefs.getBoolean(all, WidgetPrefs.SHOW_DATE, true);
+        timeColor = WidgetPrefs.getInt(all, WidgetPrefs.TIME_COLOR, Color.WHITE);
+        dateColor = WidgetPrefs.getInt(all, WidgetPrefs.DATE_COLOR, Color.WHITE);
+        timeFormat = WidgetPrefs.getString(all, WidgetPrefs.TIME_FORMAT, "");
+        dateFormat = WidgetPrefs.getString(all, WidgetPrefs.DATE_FORMAT, "EEE, MMM d");
+        timeSize = WidgetPrefs.getInt(all, WidgetPrefs.TIME_SIZE, 42);
+        dateSize = WidgetPrefs.getInt(all, WidgetPrefs.DATE_SIZE, 22);
+        timeAlign = WidgetPrefs.getInt(all, WidgetPrefs.TIME_ALIGN, Gravity.CENTER);
+        dateAlign = WidgetPrefs.getInt(all, WidgetPrefs.DATE_ALIGN, Gravity.CENTER);
     }
 
     private int getLayoutResource() {
-        switch (fontName) {
-            case "warnes":
-                return R.layout.widget_layout_warnes;
-            case "latoreg":
-                return R.layout.widget_layout_latoreg;
-            case "latolight":
-                return R.layout.widget_layout_latolight;
-            case "latothin":
-                return R.layout.widget_layout_latothin;
-            case "arizonia":
-                return R.layout.widget_layout_arizonia;
-            case "imprima":
-                return R.layout.widget_layout_imprima;
-            case "notosans":
-                return R.layout.widget_layout_notosans;
-            case "rubik":
-                return R.layout.widget_layout_rubik;
-            case "jollylodger":
-                return R.layout.widget_layout_jollylodger;
-            case "archivoblack":
-                return R.layout.widget_layout_archivoblack;
-            case "bungeeshade":
-                return R.layout.widget_layout_bungeeshade;
-            case "coda":
-                return R.layout.widget_layout_coda;
-            case "ubuntulight":
-                return R.layout.widget_layout_ubuntulight;
-            case "handlee":
-                return R.layout.widget_layout_handlee;
-            default:
-                return R.layout.widget_layout_default;
+        switch (font) {
+            case "thin": return R.layout.widget_layout_thin;
+            case "light": return R.layout.widget_layout_light;
+            case "medium": return R.layout.widget_layout_medium;
+            case "black": return R.layout.widget_layout_black;
+            case "condensedlight": return R.layout.widget_layout_condensedlight;
+            case "condensed": return R.layout.widget_layout_condensed;
+            case "serif": return R.layout.widget_layout_serif;
+            case "monospace": return R.layout.widget_layout_monospace;
+            case "typewriter": return R.layout.widget_layout_typewriter;
+            case "casual": return R.layout.widget_layout_casual;
+            case "cursive": return R.layout.widget_layout_cursive;
+            case "smallcaps": return R.layout.widget_layout_smallcaps;
+            default: return R.layout.widget_layout_default;
         }
     }
 
-    private int getCorrectTimeView() {
-        if (widgetOrientation==HORIZONTAL) return R.id.clockLeft;
-        else if (widgetOrientation==HORIZONTAL_FLIPPED) return R.id.clockRight;
-        else if (widgetOrientation==VERTICAL) {
-            switch (timeAlign) {
-                case Gravity.LEFT: return R.id.clockLeft;
-                case Gravity.RIGHT: return R.id.clockRight;
-                default: return R.id.clock; //center
-            }
-        } else { //VERTICAL_FLIPPED
-            switch (timeAlign) {
-                case Gravity.LEFT: return R.id.dateLeft;
-                case Gravity.RIGHT: return R.id.dateRight;
-                default: return R.id.date; //center
-            }
+    private int getTimeView() {
+        switch (orientation) {
+            case HORIZONTAL: return R.id.clockLeft;
+            case HORIZONTAL_FLIPPED: return R.id.clockRight;
+            case VERTICAL_FLIPPED: return alignedView(timeAlign, R.id.dateLeft, R.id.date, R.id.dateRight);
+            default: return alignedView(timeAlign, R.id.clockLeft, R.id.clock, R.id.clockRight);
         }
     }
 
-    private int getCorrectDateView() {
-        if (widgetOrientation==HORIZONTAL) return R.id.clockRight;
-        else if (widgetOrientation==HORIZONTAL_FLIPPED) return R.id.clockLeft;
-        else if (widgetOrientation==VERTICAL) {
-            switch (dateAlign) {
-                case Gravity.LEFT: return R.id.dateLeft;
-                case Gravity.RIGHT: return R.id.dateRight;
-                default: return R.id.date; //center
-            }
-        } else { //VERTICAL_FLIPPED
-            switch (dateAlign) {
-                case Gravity.LEFT: return R.id.clockLeft;
-                case Gravity.RIGHT: return R.id.clockRight;
-                default: return R.id.clock; //center
-            }
+    private int getDateView() {
+        switch (orientation) {
+            case HORIZONTAL: return R.id.clockRight;
+            case HORIZONTAL_FLIPPED: return R.id.clockLeft;
+            case VERTICAL_FLIPPED: return alignedView(dateAlign, R.id.clockLeft, R.id.clock, R.id.clockRight);
+            default: return alignedView(dateAlign, R.id.dateLeft, R.id.date, R.id.dateRight);
         }
     }
 
-    public RemoteViews createWidgetRemoteView() {
-        RemoteViews views = new RemoteViews(context.getPackageName(),
-                getLayoutResource());
+    private static int alignedView(int align, int left, int center, int right) {
+        if (align == Gravity.LEFT) return left;
+        if (align == Gravity.RIGHT) return right;
+        return center;
+    }
 
-        //set clock alignment
-        views.setViewVisibility(R.id.clockLeft, View.GONE);
-        views.setViewVisibility(R.id.clock, View.GONE);
-        views.setViewVisibility(R.id.clockRight, View.GONE);
-        //set date alignment
-        views.setViewVisibility(R.id.dateLeft, View.GONE);
-        views.setViewVisibility(R.id.date, View.GONE);
-        views.setViewVisibility(R.id.dateRight, View.GONE);
-        if (showTime)
-            views.setViewVisibility(getCorrectTimeView(), View.VISIBLE);
-        if (showDate)
-            views.setViewVisibility(getCorrectDateView(), View.VISIBLE);
-        //set clock format
-        views.setCharSequence(getCorrectTimeView(),"setFormat24Hour",timeFormat);
-        views.setCharSequence(getCorrectTimeView(),"setFormat12Hour",timeFormat);
-        //set date format
-        views.setCharSequence(getCorrectDateView(),"setFormat24Hour",dateFormat);
-        views.setCharSequence(getCorrectDateView(),"setFormat12Hour",dateFormat);
-        //set time size
-        views.setTextViewTextSize(getCorrectTimeView(), TypedValue.COMPLEX_UNIT_SP,timeTextSize);
-        //set date size
-        views.setTextViewTextSize(getCorrectDateView(), TypedValue.COMPLEX_UNIT_SP,dateTextSize);
-        //set clock color
-        views.setTextColor(getCorrectTimeView(),clockColor);
-        //set date color
-        views.setTextColor(getCorrectDateView(),dateColor);
+    RemoteViews createRemoteViews() {
+        RemoteViews views = new RemoteViews(context.getPackageName(), getLayoutResource());
 
+        for (int id : new int[]{R.id.clockLeft, R.id.clock, R.id.clockRight, R.id.dateLeft, R.id.date, R.id.dateRight}) {
+            views.setViewVisibility(id, View.GONE);
+        }
+        int timeView = getTimeView();
+        int dateView = getDateView();
+        if (showTime) views.setViewVisibility(timeView, View.VISIBLE);
+        if (showDate) views.setViewVisibility(dateView, View.VISIBLE);
 
+        if (timeFormat.trim().isEmpty()) {
+            views.setCharSequence(timeView, "setFormat12Hour", "h:mm");
+            views.setCharSequence(timeView, "setFormat24Hour", "H:mm");
+        } else {
+            views.setCharSequence(timeView, "setFormat12Hour", timeFormat);
+            views.setCharSequence(timeView, "setFormat24Hour", timeFormat);
+        }
+        views.setCharSequence(dateView, "setFormat12Hour", dateFormat);
+        views.setCharSequence(dateView, "setFormat24Hour", dateFormat);
 
+        views.setTextViewTextSize(timeView, TypedValue.COMPLEX_UNIT_SP, timeSize);
+        views.setTextViewTextSize(dateView, TypedValue.COMPLEX_UNIT_SP, dateSize);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !COLOR_CUSTOM.equals(colorMode)) {
+            // Resolved by the launcher when it draws the widget, so the colors follow
+            // wallpaper changes without the app being woken up.
+            boolean light = COLOR_DYNAMIC_LIGHT.equals(colorMode);
+            views.setColorStateList(timeView, "setTextColor",
+                    light ? android.R.color.system_accent1_100 : android.R.color.system_accent1_700);
+            views.setColorStateList(dateView, "setTextColor",
+                    light ? android.R.color.system_accent2_100 : android.R.color.system_accent2_700);
+        } else {
+            views.setTextColor(timeView, timeColor);
+            views.setTextColor(dateView, dateColor);
+        }
         return views;
     }
 }

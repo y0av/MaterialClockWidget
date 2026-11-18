@@ -1,11 +1,10 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- The settings screen sits over the home-screen wallpaper so the preview
+         matches what the widget will look like. No storage permission needed. -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="ClockStyle">
@@ -13,12 +12,23 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:singleLine">true</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="CustomFont" parent="TextAppearance.AppCompat.Body1">
-        <item name="fontFamily">@font/bungee_shade</item>
-        <item name="android:fontFamily">@font/bungee_shade</item>
-    </style>
-
+    <!-- Android 12+ ignores font resources bundled with an app when a widget is drawn on
+         the home screen, so every option here is a system font family referenced by name. -->
+    <style name="ClockStyle.Default" />
+    <style name="ClockStyle.Thin"><item name="android:fontFamily">sans-serif-thin</item></style>
+    <style name="ClockStyle.Light"><item name="android:fontFamily">sans-serif-light</item></style>
+    <style name="ClockStyle.Medium"><item name="android:fontFamily">sans-serif-medium</item></style>
+    <style name="ClockStyle.Black"><item name="android:fontFamily">sans-serif-black</item></style>
+    <style name="ClockStyle.CondensedLight"><item name="android:fontFamily">sans-serif-condensed-light</item></style>
+    <style name="ClockStyle.Condensed"><item name="android:fontFamily">sans-serif-condensed</item></style>
+    <style name="ClockStyle.Serif"><item name="android:fontFamily">serif</item></style>
+    <style name="ClockStyle.Monospace"><item name="android:fontFamily">monospace</item></style>
+    <style name="ClockStyle.Typewriter"><item name="android:fontFamily">serif-monospace</item></style>
+    <style name="ClockStyle.Casual"><item name="android:fontFamily">casual</item></style>
+    <style name="ClockStyle.Cursive"><item name="android:fontFamily">cursive</item></style>
+    <style name="ClockStyle.SmallCaps"><item name="android:fontFamily">sans-serif-smallcaps</item></style>
 
 </resources>

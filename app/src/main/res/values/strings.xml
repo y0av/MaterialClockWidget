@@ -1,48 +1,30 @@
 <resources>
     <string name="app_name">MaterialClock</string>
-    <string name="empty_view_text">MaterialClock</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="save_title">Save</string>
+    <string name="title_activity_settings">Widget settings</string>
+    <string name="save_title">Done</string>
+    <string name="widget_description">Digital clock and date in your choice of font, size and color</string>
 
-    <!-- Preference Titles -->
+    <!-- Preference titles -->
     <string name="design_header">Design</string>
     <string name="widget_layout_title">Widget orientation</string>
-    <string name="time_header">Time layout</string>
-    <string name="date_header">Date layout</string>
+    <string name="color_mode_title">Colors</string>
+    <string name="time_header">Time</string>
+    <string name="date_header">Date</string>
 
-    <string name="color_picker_header">Clock color</string>
+    <string name="color_picker_header">Time color</string>
     <string name="show_time_title">Show time</string>
     <string name="time_format_title">Time format</string>
+    <string name="time_format_system">System default (follows your 12/24-hour setting)</string>
     <string name="clock_font_header">Font</string>
     <string name="time_size_title">Time size</string>
-    <string name="time_align_title">Time align</string>
+    <string name="time_align_title">Time alignment</string>
 
-    <string name="date_align_title">Date align</string>
+    <string name="date_align_title">Date alignment</string>
     <string name="show_date_title">Show date</string>
     <string name="date_format_title">Date format</string>
     <string name="date_size_title">Date size</string>
     <string name="date_color_picker_title">Date color</string>
 
-    <string name="time_format_dialog_msg">H – Hour in day (0–23)\nk – Hour in day (1–24)\nK – Hour in am/pm (0–11) \nh - Hour in am/pm (1-12)\nm - Minute\ns - Second\na - Am/pm marker</string>
-    <string name="date_format_dialog_msg">y - Year\nM - Month\nd - Day in month\nD - Day in year\nE - Day name in week\nw - Week in year\nW - Week in month</string>
-
-    <!-- SharedPrefereces -->
-    <string name="sp_main">sp_main</string>
-
-    <string name="sp_font">sp_font</string>
-    <string name="sp_layout">sp_layout</string>
-
-    <string name="sp_clock_color">sp_clock_color</string>
-    <string name="sp_show_time">sp_show_time</string>
-    <string name="sp_time_format">sp_time_format</string>
-    <string name="sp_time_size">sp_time_size</string>
-    <string name="sp_time_align">sp_time_align</string>
-
-    <string name="sp_date_align">sp_date_align</string>
-    <string name="sp_show_date">sp_show_date</string>
-    <string name="sp_date_size">sp_date_size</string>
-    <string name="sp_date_format">sp_date_format</string>
-    <string name="sp_date_color">sp_date_color</string>
-
-
+    <string name="time_format_dialog_msg">Leave empty to follow the system 12/24-hour setting.\n\nH – Hour in day (0–23)\nk – Hour in day (1–24)\nK – Hour in am/pm (0–11)\nh – Hour in am/pm (1–12)\nm – Minute\ns – Second\na – Am/pm marker</string>
+    <string name="date_format_dialog_msg">y – Year\nM – Month\nd – Day in month\nD – Day in year\nE – Day name in week\nw – Week in year\nW – Week in month</string>
 </resources>

@@ -1,8 +1,8 @@
-# Privacy Policy for Material digital clock widget with google fonts
+# Privacy Policy for Material digital clock widget
 
-**Effective date:** [2026-04-07]
+**Effective date:** [2026-11-18]
 
-This Privacy Policy explains how **Yoav Z** ("we", "us", or "our") handles information when you use the app **Material digital clock widget with google fonts** ("the App").
+This Privacy Policy explains how **Yoav Z** ("we", "us", or "our") handles information when you use the app **Material digital clock widget** ("the App").
 
 ## 1. Information we collect
 
@@ -28,7 +28,7 @@ Any settings you choose in the App are stored locally on your device and are not
 
 The App does not use third-party analytics, advertising, or tracking services.
 
-If the App loads font resources or other visual assets, those resources are used only to provide the App’s appearance and are not used to identify you personally.
+The App requests no Android permissions.
 
 ## 4. Data storage
 

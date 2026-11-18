@@ -1,32 +1,59 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
+
+// Release signing reads keystore.properties at the repo root (gitignored):
+//   storeFile=/path/to/mykeystore.jks
+//   storePassword=...
+//   keyAlias=mykey
+//   keyPassword=...
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withReader('UTF-8') { keystoreProperties.load(it) }
+}
 
 android {
-    compileSdkVersion 32
+    namespace 'xyz.yoav.materialclock'
+    compileSdk 36
 
     defaultConfig {
-        applicationId "xyz.yoav.materialclock"
-        minSdkVersion 26
-        targetSdkVersion 32
-        versionCode 3
-        versionName "1.0.4"
+        applicationId 'xyz.yoav.materialclock'
+        minSdk 26
+        targetSdk 36
+        versionCode 4
+        versionName '1.1.0'
+    }
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            release {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.preference:preference:1.1.1'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
 }

@@ -1,100 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keys and defaults must match WidgetPrefs / WidgetViewCreator. -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/design_header">
-
-
         <ListPreference
-            android:defaultValue="latoreg"
-            android:entries="@array/font_list"
-            android:entryValues="@array/font_list_values"
-            android:key="@string/sp_font"
-            android:title="@string/clock_font_header"
+            app:defaultValue="default"
+            app:entries="@array/font_list"
+            app:entryValues="@array/font_list_values"
             app:icon="@drawable/ic_font"
+            app:key="sp_font"
+            app:title="@string/clock_font_header"
             app:useSimpleSummaryProvider="true" />
         <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/widget_layout_titles"
-            android:entryValues="@array/widget_layout_values"
-            android:key="@string/sp_layout"
-            android:title="@string/widget_layout_title"
+            app:defaultValue="0"
+            app:entries="@array/widget_layout_titles"
+            app:entryValues="@array/widget_layout_values"
             app:icon="@drawable/ic_layout"
+            app:key="sp_layout"
+            app:title="@string/widget_layout_title"
             app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/time_header">
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="@string/sp_show_time"
-            android:title="@string/show_time_title"
-            app:icon="@drawable/ic_clock" />
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:defaultValue="-1"
-            android:key="@string/sp_clock_color"
-            android:title="@string/color_picker_header"
-            app:cpv_showAlphaSlider="false"
-            app:icon="@drawable/ic_colorize" />
-        <EditTextPreference
-            android:defaultValue="k:mm"
-            android:dialogMessage="@string/time_format_dialog_msg"
-            android:icon="@drawable/ic_text"
-            android:key="@string/sp_time_format"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/time_format_title"
-            app:useSimpleSummaryProvider="true" />
-        <SeekBarPreference
-            android:key="@string/sp_time_size"
-            android:max="100"
-            android:defaultValue="42"
-            android:title="@string/time_size_title"
-            app:icon="@drawable/ic_size" />
         <ListPreference
-            android:defaultValue="17"
-            android:entries="@array/text_align_keys"
-            android:entryValues="@array/text_align_values"
-            android:key="@string/sp_time_align"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/time_align_title"
-            app:icon="@drawable/ic_align"/>
+            app:defaultValue="custom"
+            app:entries="@array/color_mode_titles"
+            app:entryValues="@array/color_mode_values"
+            app:icon="@drawable/ic_colorize"
+            app:isPreferenceVisible="false"
+            app:key="sp_color_mode"
+            app:title="@string/color_mode_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/date_header">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="@string/sp_show_date"
-            android:title="@string/show_date_title"
-            app:icon="@drawable/ic_calander" />
+    <PreferenceCategory app:title="@string/time_header">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_clock"
+            app:key="sp_show_time"
+            app:title="@string/show_time_title" />
         <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:defaultValue="-1"
-            android:key="@string/sp_date_color"
-            android:title="@string/date_color_picker_title"
             app:cpv_showAlphaSlider="false"
-            app:icon="@drawable/ic_colorize" />
+            app:defaultValue="-1"
+            app:icon="@drawable/ic_colorize"
+            app:key="sp_clock_color"
+            app:title="@string/color_picker_header" />
         <EditTextPreference
-            android:defaultValue="EEE, MMM d"
-            android:dialogMessage="@string/date_format_dialog_msg"
-            android:icon="@drawable/ic_text"
-            android:key="@string/sp_date_format"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/date_format_title"
+            app:defaultValue=""
+            app:dialogMessage="@string/time_format_dialog_msg"
+            app:icon="@drawable/ic_text"
+            app:key="sp_time_format"
+            app:title="@string/time_format_title" />
+        <SeekBarPreference
+            android:max="100"
+            app:defaultValue="42"
+            app:icon="@drawable/ic_size"
+            app:key="sp_time_size"
+            app:min="8"
+            app:showSeekBarValue="true"
+            app:title="@string/time_size_title" />
+        <ListPreference
+            app:defaultValue="17"
+            app:entries="@array/text_align_keys"
+            app:entryValues="@array/text_align_values"
+            app:icon="@drawable/ic_align"
+            app:key="sp_time_align"
+            app:title="@string/time_align_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/date_header">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_calander"
+            app:key="sp_show_date"
+            app:title="@string/show_date_title" />
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            app:cpv_showAlphaSlider="false"
+            app:defaultValue="-1"
+            app:icon="@drawable/ic_colorize"
+            app:key="sp_date_color"
+            app:title="@string/date_color_picker_title" />
+        <EditTextPreference
+            app:defaultValue="EEE, MMM d"
+            app:dialogMessage="@string/date_format_dialog_msg"
+            app:icon="@drawable/ic_text"
+            app:key="sp_date_format"
+            app:title="@string/date_format_title"
             app:useSimpleSummaryProvider="true" />
         <SeekBarPreference
-            android:key="@string/sp_date_size"
             android:max="100"
-            android:defaultValue="22"
-            android:title="@string/date_size_title"
-            app:icon="@drawable/ic_size" />
+            app:defaultValue="22"
+            app:icon="@drawable/ic_size"
+            app:key="sp_date_size"
+            app:min="8"
+            app:showSeekBarValue="true"
+            app:title="@string/date_size_title" />
         <ListPreference
-            android:defaultValue="17"
-            android:entries="@array/text_align_keys"
-            android:entryValues="@array/text_align_values"
-            android:key="@string/sp_date_align"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/date_align_title"
-            app:icon="@drawable/ic_align"/>
+            app:defaultValue="17"
+            app:entries="@array/text_align_keys"
+            app:entryValues="@array/text_align_values"
+            app:icon="@drawable/ic_align"
+            app:key="sp_date_align"
+            app:title="@string/date_align_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>

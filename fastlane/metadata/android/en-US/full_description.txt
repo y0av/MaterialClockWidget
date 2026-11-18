@@ -1,0 +1,16 @@
+A clean digital clock and date widget for your home screen, with nothing else attached: no ads, no tracking, no permissions.
+
+Each widget has its own settings:
+• 13 font styles: thin, light, medium, black, condensed, serif, monospace, typewriter, casual, cursive, small caps and more
+• Time and date size, color and alignment
+• Wallpaper colors on Android 12+, which follow your wallpaper automatically
+• Vertical or horizontal layout, either way round
+• Custom time and date formats, or follow your phone's 12/24-hour setting
+
+The settings screen previews the widget over your actual wallpaper.
+
+To add it, long-press an empty spot on your home screen, tap Widgets and look for MaterialClock. To change a widget later, long-press it and tap the edit button.
+
+Open source: https://github.com/y0av/MaterialClockWidget
+
+App icon by monkik (https://www.flaticon.com/authors/monkik)

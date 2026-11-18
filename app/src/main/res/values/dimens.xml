@@ -16,4 +16,5 @@
 <resources>
     <dimen name="widget_margin">28dp</dimen>
     <dimen name="widget_margin_vertical">0dp</dimen>
+    <dimen name="preview_height">180dp</dimen>
 </resources>

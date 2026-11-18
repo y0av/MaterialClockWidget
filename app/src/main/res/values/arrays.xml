@@ -1,38 +1,45 @@
 <resources>
+    <!-- Keep in sync with WidgetViewCreator#getLayoutResource. -->
     <string-array name="font_list">
-       <item>System font</item>
-        <item>Warnes</item>
-        <item>Lato regular</item>
-        <item>Lato light</item>
-        <item>Lato thin</item>
-        <item>Arizonia</item>
-        <item>Rubik light</item>
-        <item>Imprima</item>
-        <item>Noto sans</item>
-        <item>Jolly lodger</item>
-        <item>Archivo black</item>
-        <item>Bungee shade</item>
-        <item>Coda</item>
-        <item>Ubuntu light</item>
-        <item>Handlee</item>
+        <item>System default</item>
+        <item>Thin</item>
+        <item>Light</item>
+        <item>Medium</item>
+        <item>Black</item>
+        <item>Condensed light</item>
+        <item>Condensed</item>
+        <item>Serif</item>
+        <item>Monospace</item>
+        <item>Typewriter</item>
+        <item>Casual</item>
+        <item>Cursive</item>
+        <item>Small caps</item>
     </string-array>
-
     <string-array name="font_list_values">
         <item>default</item>
-        <item>warnes</item>
-        <item>latoreg</item>
-        <item>latolight</item>
-        <item>latothin</item>
-        <item>arizonia</item>
-        <item>rubik</item>
-        <item>imprima</item>
-        <item>notosans</item>
-        <item>jollylodger</item>
-        <item>archivoblack</item>
-        <item>bungeeshade</item>
-        <item>coda</item>
-        <item>ubuntulight</item>
-        <item>handlee</item>
+        <item>thin</item>
+        <item>light</item>
+        <item>medium</item>
+        <item>black</item>
+        <item>condensedlight</item>
+        <item>condensed</item>
+        <item>serif</item>
+        <item>monospace</item>
+        <item>typewriter</item>
+        <item>casual</item>
+        <item>cursive</item>
+        <item>smallcaps</item>
+    </string-array>
+
+    <string-array name="color_mode_titles">
+        <item>Custom colors</item>
+        <item>Wallpaper colors, light (for dark wallpapers)</item>
+        <item>Wallpaper colors, dark (for light wallpapers)</item>
+    </string-array>
+    <string-array name="color_mode_values">
+        <item>custom</item>
+        <item>dynamic_light</item>
+        <item>dynamic_dark</item>
     </string-array>
 
     <string-array name="text_align_keys">
@@ -40,12 +47,14 @@
         <item>Center</item>
         <item>Right</item>
     </string-array>
+    <!-- Gravity.LEFT, Gravity.CENTER, Gravity.RIGHT -->
     <string-array name="text_align_values">
         <item>3</item>
         <item>17</item>
         <item>5</item>
     </string-array>
 
+    <!-- Keep in sync with WidgetViewCreator orientation constants. -->
     <string-array name="widget_layout_titles">
         <item>Vertical</item>
         <item>Vertical flipped</item>

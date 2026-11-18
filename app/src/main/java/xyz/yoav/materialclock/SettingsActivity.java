@@ -1,224 +1,163 @@
 package xyz.yoav.materialclock;
 
-import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.app.WallpaperColors;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
-import android.widget.Switch;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+import androidx.activity.EdgeToEdge;
+import androidx.activity.SystemBarStyle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SeekBarPreference;
-import androidx.preference.TwoStatePreference;
 
-import com.jaredrummler.android.colorpicker.ColorPickerView;
-import com.jaredrummler.android.colorpicker.ColorPreferenceCompat;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.color.DynamicColors;
 
-import java.util.Calendar;
+/** Widget configuration screen. Shown when a widget is placed (Android 11 and older) or reconfigured. */
+public class SettingsActivity extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-public class SettingsActivity extends AppCompatActivity implements WidgetUpdatedInterface {
+    private static final String ARG_WIDGET_ID = "appWidgetId";
 
-    private static final String TAG = "SettingsActivity";
-    int appWidgetId;
-    private WidgetViewCreator widgetViewCreator;
-
-
-    FrameLayout preview;
+    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private SharedPreferences prefs;
+    private FrameLayout preview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DynamicColors.applyToActivityIfAvailable(this);
+        // Light status bar icons by default: the screen sits over the wallpaper.
+        EdgeToEdge.enable(this, SystemBarStyle.dark(Color.TRANSPARENT));
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.settings, new SettingsFragment())
-                .commit();
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-
-        preview = findViewById(R.id.preview_view);
-
-        widgetViewCreator = new WidgetViewCreator(this, this);
-
-        setupPreviewFrame();
-        widgetSetup();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "## listen");
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.sp_main), MODE_PRIVATE);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(widgetViewCreator);
-        widgetViewCreator.onSharedPreferenceChanged(sharedPreferences, "");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getSharedPreferences(getString(R.string.sp_main), MODE_PRIVATE).unregisterOnSharedPreferenceChangeListener(widgetViewCreator);
-    }
-
-    @Override
-    public void widgetDataUpdated() {
-        widgetSetup();
-    }
-
-
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main), MODE_PRIVATE);
-
-            ColorPreferenceCompat colorPreference = findPreference(getString(R.string.sp_clock_color));
-            colorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_clock_color), Color.WHITE));
-            colorPreference.setOnPreferenceChangeListener(listener);
-            TwoStatePreference show_time = findPreference(getString(R.string.sp_show_time));
-            show_time.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_time), true));
-            show_time.setOnPreferenceChangeListener(listener);
-            EditTextPreference timeFormat = findPreference(getString(R.string.sp_time_format));
-            timeFormat.setOnPreferenceChangeListener(listener);
-
-            ListPreference fontList = findPreference(getString(R.string.sp_font));
-            fontList.setOnPreferenceChangeListener(listener);
-            SeekBarPreference clockSize = findPreference(getString(R.string.sp_time_size));
-            clockSize.setOnPreferenceChangeListener(listener);
-            ListPreference timeAlign = findPreference(getString(R.string.sp_time_align));
-            timeAlign.setOnPreferenceChangeListener(listener);
-
-            ListPreference dateAlign = findPreference(getString(R.string.sp_date_align));
-            dateAlign.setOnPreferenceChangeListener(listener);
-            SeekBarPreference dateSize = findPreference(getString(R.string.sp_date_size));
-            dateSize.setOnPreferenceChangeListener(listener);
-            ColorPreferenceCompat dateColorPreference = findPreference(getString(R.string.sp_date_color));
-            dateColorPreference.setDefaultValue(sharedPref.getInt(getString(R.string.sp_date_color), Color.WHITE));
-            dateColorPreference.setOnPreferenceChangeListener(listener);
-            TwoStatePreference show_date = findPreference(getString(R.string.sp_show_date));
-            show_date.setChecked(sharedPref.getBoolean(getString(R.string.sp_show_date), true));
-            show_date.setOnPreferenceChangeListener(listener);
-            EditTextPreference dateFormat = findPreference(getString(R.string.sp_date_format));
-            dateFormat.setOnPreferenceChangeListener(listener);
-
-            ListPreference widgetOrientation = findPreference(getString(R.string.sp_layout));
-            widgetOrientation.setOnPreferenceChangeListener(listener);
-        }
-
-        Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.sp_main), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                if (getString(R.string.sp_clock_color).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_clock_color), (int) newValue);
-                if (getString(R.string.sp_show_time).equals(preference.getKey()))
-                    editor.putBoolean(getString(R.string.sp_show_time), (boolean) newValue);
-                if (getString(R.string.sp_font).equals(preference.getKey()))
-                    editor.putString(getString(R.string.sp_font), (String) newValue);
-                if (getString(R.string.sp_time_format).equals(preference.getKey()))
-                    editor.putString(getString(R.string.sp_time_format), (String) newValue);
-                if (getString(R.string.sp_time_size).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_time_size), (int) newValue);
-                if (getString(R.string.sp_time_align).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_time_align), Integer.parseInt((String) newValue));
-                if (getString(R.string.sp_date_align).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_date_align), Integer.parseInt((String) newValue));
-                if (getString(R.string.sp_date_size).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_date_size), (int) newValue);
-                if (getString(R.string.sp_date_color).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_date_color), (int) newValue);
-                if (getString(R.string.sp_show_date).equals(preference.getKey()))
-                    editor.putBoolean(getString(R.string.sp_show_date), (boolean) newValue);
-                if (getString(R.string.sp_date_format).equals(preference.getKey()))
-                    editor.putString(getString(R.string.sp_date_format), (String) newValue);
-                if (getString(R.string.sp_layout).equals(preference.getKey()))
-                    editor.putInt(getString(R.string.sp_layout), Integer.parseInt((String) newValue));
-
-
-                editor.apply();
-                return true;
-            }
-        };
-
-    }
-
-    private void setupPreviewFrame() {
-        ImageView preview = findViewById(R.id.bg);
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            finish();
             return;
         }
-        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        preview.setImageDrawable(wallpaperDrawable);
+        // Always OK: leaving the screen keeps the widget with whatever was chosen so far.
+        setResult(RESULT_OK, new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId));
+
+        prefs = WidgetPrefs.get(this, appWidgetId);
+        setContentView(R.layout.settings_activity);
+        preview = findViewById(R.id.preview_view);
+
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.savebtn) {
+                finish();
+                return true;
+            }
+            return false;
+        });
+
+        View settings = findViewById(R.id.settings);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root), (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            v.setPadding(bars.left, 0, bars.right, 0);
+            preview.setPadding(0, bars.top, 0, 0);
+            preview.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.preview_height) + bars.top;
+            settings.setPadding(0, 0, 0, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+        matchStatusBarToWallpaper();
+
+        if (savedInstanceState == null) {
+            SettingsFragment fragment = new SettingsFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_WIDGET_ID, appWidgetId);
+            fragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.settings, fragment).commit();
+        }
+    }
+
+    /** Dark status bar icons when the wallpaper is light (Android 12+ exposes this hint). */
+    private void matchStatusBarToWallpaper() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return;
+        try {
+            WallpaperColors colors = WallpaperManager.getInstance(this).getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+            if (colors == null) return;
+            boolean darkText = (colors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_TEXT) != 0;
+            WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView()).setAppearanceLightStatusBars(darkText);
+        } catch (RuntimeException ignored) {
+            // Some devices restrict wallpaper access; keep the default.
+        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        setupPreviewFrame(); //thats here to setup the preview window after permission to fetch the user wallpaper has being approved
+    protected void onResume() {
+        super.onResume();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        render();
     }
 
-    private void widgetSetup() {
-        Log.d(TAG, "## widgetSetup");
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            appWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+    @Override
+    protected void onPause() {
+        super.onPause();
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
+    }
 
-        RemoteViews views = widgetViewCreator.createWidgetRemoteView();
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        render();
+    }
+
+    /** Redraws the in-app preview and pushes the same views to the home-screen widget. */
+    private void render() {
+        RemoteViews views = new WidgetViewCreator(this, prefs).createRemoteViews();
         preview.removeAllViews();
-        View previewView = views.apply(this, preview);
-        preview.addView(previewView);
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-        Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(RESULT_OK, resultValue);
+        preview.addView(views.apply(this, preview));
+        AppWidgetManager.getInstance(this).updateAppWidget(appWidgetId, views);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    public static class SettingsFragment extends PreferenceFragmentCompat {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.savebtn) {
-            finish(); //thats enough. finishing this activity will activate the widget
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            int appWidgetId = requireArguments().getInt(ARG_WIDGET_ID);
+            getPreferenceManager().setSharedPreferencesName(WidgetPrefs.fileName(appWidgetId));
+            setPreferencesFromResource(R.xml.root_preferences, rootKey);
+
+            EditTextPreference timeFormat = findPreference(WidgetPrefs.TIME_FORMAT);
+            timeFormat.setSummaryProvider(p -> {
+                String value = ((EditTextPreference) p).getText();
+                return value == null || value.trim().isEmpty() ? getString(R.string.time_format_system) : value;
+            });
+
+            ListPreference colorMode = findPreference(WidgetPrefs.COLOR_MODE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                colorMode.setVisible(true);
+                updateColorPickers(colorMode.getValue());
+                colorMode.setOnPreferenceChangeListener((p, value) -> {
+                    updateColorPickers((String) value);
+                    return true;
+                });
+            }
         }
-        return super.onOptionsItemSelected(item);
-    }
 
+        private void updateColorPickers(String colorMode) {
+            boolean custom = WidgetViewCreator.COLOR_CUSTOM.equals(colorMode);
+            Preference time = findPreference(WidgetPrefs.TIME_COLOR);
+            Preference date = findPreference(WidgetPrefs.DATE_COLOR);
+            time.setEnabled(custom);
+            date.setEnabled(custom);
+        }
+    }
 }

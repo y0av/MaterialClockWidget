@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shown in the launcher's widget picker (Android 12+). The dark backing keeps the
+     default white text readable on the picker's light background. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_preview_background">
+
+    <include layout="@layout/widget_layout_default" />
+</FrameLayout>

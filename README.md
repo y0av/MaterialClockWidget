@@ -1,24 +1,60 @@
-*TODO* - add a launcher activity.
+# Material Clock & Date Widget
 
-Push request are very welcome.
+A digital clock and date widget for Android home screens. No ads, no tracking, no permissions.
 
-# MaterialClockWidget
-Simple and beautiful material-designed clock widget for android
+<a href="https://play.google.com/store/apps/details?id=xyz.yoav.materialclock">Get it on Google Play</a>
 
-Material digital clock widget with google fonts
-https://play.google.com/store/apps/details?id=xyz.yoav.materialclock
+<p>
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="Two clock widgets on a home screen, thin and serif">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="200" alt="Cursive widget and a horizontal bold widget">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="Widget settings over the wallpaper">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="Font list in dark mode">
+</p>
 
-This is only a widget without an attached app.
-to use it simply look for it on your widget list (usually long pressing your launcher background)
+## Features
 
-Clean digital clock + date widget with a lot of customization abilities.
+Each widget on your home screen has its own settings:
 
-READ_EXTERNAL_STORAGE is only there for fetching your current wallpaper for a nice preview in the configuration screen.
+- 13 font styles: thin, light, medium, black, condensed, serif, monospace, typewriter, casual, cursive, small caps and more
+- Size, color and alignment for the time and the date, separately
+- Wallpaper colors on Android 12 and later, which follow your wallpaper when it changes
+- Vertical or horizontal layout, either way round
+- Custom time and date formats, or your phone's 12/24-hour setting
 
-app icon made by monkik(https://www.flaticon.com/authors/monkik)
+The settings screen previews the widget over your real wallpaper.
 
-![screenshot](https://lh3.googleusercontent.com/eeX4UpX_GyGxN_pfM-ZU_I4zbUtlJrvdMgNl523PJcpmabQg1-s36IyN3URsY6jXWT8=w1920-h966)
-![screenshot](https://lh3.googleusercontent.com/KwiufrC8aZFDwiAlePDzCzJAYWXThmyfOcMEKCA94iOLRNNf6e3mUEk6cLSQMO3YhjA=w1920-h966)
-![screenshot](https://lh3.googleusercontent.com/dtoruVmPrlvHgm4E8YHOYT58Q75Yait58mbeY0-G2Jp7JYtoRODED3F_KpnSeOls4B4=w1920-h966)
-![screenshot](https://lh3.googleusercontent.com/1xRvEnuHT_ilVQRJ9wzy5-HMsx1fhWHgkJ9aZJTdnsr6UzZiLO2_QzHWbzPxck5SNSg=w1920-h966)
-![screenshow](https://yoav.xyz/wp-content/uploads/photo_2020-10-05_11-25-29-342x1024.jpg)
+Requires Android 8.0 or later. Wallpaper colors need Android 12.
+
+## Using it
+
+There is no app screen, only the widget. Long-press an empty spot on your home screen, tap Widgets and look for MaterialClock. To change a widget later, long-press it and tap its edit button.
+
+## Why built-in fonts only
+
+Versions 1.0.x bundled their own font files. Android 12 and later ignore an app's bundled fonts when a widget is drawn on the home screen, so those fonts silently fell back to the default. The font list now uses the font families built into Android, which widgets are allowed to use. Widgets set to an old font move to the closest built-in one on upgrade.
+
+## Building
+
+    ./gradlew assembleDebug
+
+Needs JDK 17 or later.
+
+Release builds are signed when `keystore.properties` exists at the repo root. It is gitignored. To create it without typing passwords into a file or your shell history:
+
+    scripts/setup_signing.sh /path/to/keystore.jks [key-alias]
+
+The script checks both passwords against the keystore before writing anything. Then:
+
+    ./gradlew bundleRelease
+
+The widget layouts are generated, one per font. Edit `scripts/generate_widget_layouts.sh` and rerun it rather than editing `widget_layout_*.xml` by hand.
+
+Play Store text and screenshots live in `fastlane/metadata/android/`.
+
+## Contributing
+
+Pull requests are welcome.
+
+## License
+
+GPL-3.0, see [LICENSE](LICENSE). App icon by [monkik](https://www.flaticon.com/authors/monkik).

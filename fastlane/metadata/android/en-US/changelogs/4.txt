@@ -1,0 +1,7 @@
+Rebuilt for current Android:
+• Fixed the settings screen crashing on Android 13 and later
+• No permissions needed any more
+• New font list built on Android's own fonts (Android 12+ blocks app-bundled fonts in widgets); existing widgets move to the closest match
+• Wallpaper colors option on Android 12+
+• Each widget now has its own settings
+• Widget can be placed without opening settings first; edit it any time
